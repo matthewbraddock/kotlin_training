@@ -8,7 +8,7 @@ import org.springframework.core.env.Environment
 class WhoisApplication
 
 fun main(args: Array<String>) {
-	val applicationContext = runApplication<WhoisApplication>(*args)
+	val applicationContext = runApplication<WhoisApplication>()
 	val environment: Environment = applicationContext.environment
 
 	val serverPort = environment.getProperty("server.port")

@@ -57,7 +57,7 @@ class WhoIsRepository {
     }
 
     private fun isWindows(): Boolean {
-        val osName = System.getProperty("os.name").toLowerCase()
+        val osName = System.getProperty("os.name").lowercase()
         return osName.contains("win")
     }
 
