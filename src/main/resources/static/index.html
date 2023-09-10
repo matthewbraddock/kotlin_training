@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <title>Whois Lookup</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+<h1>Whois Lookup</h1>
+
+<!-- Form to collect user input -->
+<form>
+    <label for="domainName">Domain Name:</label>
+    <input type="text" id="domainName" name="domainName" required>
+    <button type="button" onclick="performWhoisLookup()">Lookup</button>
+</form>
+
+<!-- Display the result here -->
+<div id="result"></div>
+
+<!-- JavaScript for AJAX request -->
+<script>
+    function performWhoisLookup() {
+        const domainName = document.getElementById("domainName").value;
+        const resultDiv = document.getElementById("result");
+        console.log("Domain Name:", domainName);
+
+        // Make an AJAX request to your Spring Boot API
+        fetch(`/api/getWhoIs?domainName=${domainName}`)
+            .then(response => response.text())
+            .then(data => {
+                // Display the API response in the resultDiv
+                console.log("API Response:", data);
+                resultDiv.innerHTML = formatWhoisResponse(data);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    }
+
+    // Format the Whois response into HTML
+    function formatWhoisResponse(response) {
+        const lines = response.split('\n');
+        let formattedResponse = '<pre>';
+
+        for (let line of lines) {
+            formattedResponse += `${escapeHtml(line)}<br>`;
+        }
+
+        formattedResponse += '</pre>';
+        return formattedResponse;
+    }
+
+    // Function to escape HTML characters to prevent XSS
+    function escapeHtml(unsafe) {
+        return unsafe.replace(/[&<"']/g, function (m) {
+            switch (m) {
+                case '&':
+                    return '&amp;';
+                case '<':
+                    return '&lt;';
+                case '"':
+                    return '&quot;';
+                case "'":
+                    return '&#039;';
+                default:
+                    return m;
+            }
+        });
+    }
+</script>
+</body>
+</html>
