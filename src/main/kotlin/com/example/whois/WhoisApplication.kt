@@ -7,7 +7,7 @@ import org.springframework.core.env.Environment
 @SpringBootApplication
 class WhoisApplication
 
-fun main(args: Array<String>) {
+fun main() {
 	val applicationContext = runApplication<WhoisApplication>()
 	val environment: Environment = applicationContext.environment
 
